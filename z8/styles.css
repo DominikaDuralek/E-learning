@@ -1,0 +1,82 @@
+.topbar{
+	height:50px;
+	width:100%; 
+	display: table;
+	text-align: center;
+	justify-content: center;
+	background-color:#2A9090;
+	color:white;
+	font-size:24px;
+}
+
+.toptext{
+	display: table-cell;
+    vertical-align: middle;
+}
+
+.content{
+	height:auto; 
+	min-height:100%; 
+	width:100%; 
+	display:flex; 
+	background-color:#A3DAD8;
+}
+
+.sidecontent{
+	padding: 5px;
+	height:auto;
+	min-height:100%;
+	width:15%;
+	float:left; 
+	background-color:#63B9B6;
+}
+
+.maincontent{
+	padding: 5px;
+	height:fit-content;
+	min-height:100%;
+	width:85%; 
+	float:left;
+	background-color:#A3DAD8;
+}
+
+.lists{
+	display:flex; 
+}
+
+.list{
+	height:auto;
+	min-height:100%;
+	width:25%;
+	float:left; 
+}
+
+.columns{
+	display:flex; 
+}
+
+.column{
+	height:auto;
+	min-height:100%;
+	width:50%;
+	float:left; 
+}
+
+.lessoncontents{
+	display:flex; 
+}
+
+.lessontext{
+	height:auto;
+	min-height:100%;
+	width:50%;
+	float:left;
+}
+
+.lessonfile{
+	height:auto;
+	min-height:100%;
+	width:50%;
+	float:left;
+}
+
