@@ -26,7 +26,7 @@ if (!isset($_SESSION['loggedin']))
 		<div class="sidecontent"> 
 			<?php
 				error_reporting(0);
-				$link = mysqli_connect(); //połączenie z BD
+				$link = mysqli_connect('', '', '', '');
 				if(!$link) { echo"Błąd: ". mysqli_connect_errno()." ".mysqli_connect_error(); } //obsługa błędu połączenia z BD
 				
 				//informacja o tym kto jest zalogowany
@@ -116,7 +116,6 @@ if (!isset($_SESSION['loggedin']))
 							} );
 					</script
 					";
-				
 			?>
 		</div>
 		

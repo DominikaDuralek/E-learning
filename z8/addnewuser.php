@@ -7,7 +7,7 @@ if (!isset($_SESSION['loggedin']))
 }
 //dodawanie uzytkownikow do bazy przez admina
 
-$link = mysqli_connect();
+$link = mysqli_connect('', '', '', '');
 if(!$link) { echo"Błąd: ". mysqli_connect_errno()." ".mysqli_connect_error(); }		
 
 $login = $_POST['login'];

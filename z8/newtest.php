@@ -25,7 +25,7 @@ if (!isset($_SESSION['loggedin']))
 		<div class="sidecontent"> 
 			<?php
 				error_reporting(0);
-				$link = mysqli_connect(); //połączenie z BD
+				$link = mysqli_connect('', '', '', '');
 				if(!$link) { echo"Błąd: ". mysqli_connect_errno()." ".mysqli_connect_error(); } //obsługa błędu połączenia z BD
 				
 				//informacja o tym kto jest zalogowany
@@ -97,9 +97,11 @@ if (!isset($_SESSION['loggedin']))
 		<div class="maincontent">	
 			<?php
 				echo "Dodawanie nowego testu:<br><br>
-				<form method='post' action='addnewtest.php'>
+				<form method='post' action='addnewtest.php' enctype='multipart/form-data'>
 					Nazwa:&nbsp;<input type='text' name='name' maxlength='200' size='100'><br>
 					Opis:&nbsp;<input type='text' name='description' maxlength='500' size='100'><br>
+					
+					Plik: <input type='file' name='uploaded_file' id='uploaded_file'><br><br>
 					<input type='submit' value='Send' />
 				</form>";
 			?>

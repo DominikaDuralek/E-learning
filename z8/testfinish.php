@@ -20,7 +20,7 @@ if (!isset($_SESSION['loggedin']))
 <BODY>
 
 <?php				
-	$link = mysqli_connect(); //połączenie z BD
+	$link = mysqli_connect('', '', '', '');
 	if(!$link) { echo"Błąd: ". mysqli_connect_errno()." ".mysqli_connect_error(); } //obsługa błędu połączenia z BD
 	date_default_timezone_set('Europe/Warsaw');
 	$datetime = date('Y-m-d H:i:s'); //czas ukonczenia testu
@@ -46,10 +46,10 @@ if (!isset($_SESSION['loggedin']))
 	$correct_answers = 0;
 	
 	//stworzenie odpowiedniego pliku
-	$fname = "files/" . $username . "_" . $testname . "_" . $datetime . ".txt"; //nazwa pliku files/uzytkownik_test
-	$myfile = fopen($fname, "w");
-	$ftxt = "Wynik użytkownika " . $username . "\nTest: " . $testname;
-	fwrite($myfile, $ftxt);
+	//$fname = "files/" . $username . "_" . $testname . "_" . $datetime . ".txt"; //nazwa pliku files/uzytkownik_test
+	//$myfile = fopen($fname, "w");
+	$htmlfile = '<span style="font-weight:bold;">Wynik użytkownika ' . $username . "<br>Test: " . $testname . "</span>";
+	//fwrite($myfile, $ftxt);
 
 	//pobranie pytan rozwiazywanego testu
 	$questions = mysqli_query($link, "SELECT * FROM question WHERE idt='$idt'"); //pobranie odpowiednich pytan
@@ -62,23 +62,201 @@ if (!isset($_SESSION['loggedin']))
 		$answer_b = $row['answer_b'];
 		$answer_c = $row['answer_c'];
 		$answer_d = $row['answer_d'];
-		$correct_answer = $row['correct'];
+
+		//ktore poprawne
+		$acorrect = $row['acorrect']; //1 lub 0
+		$bcorrect = $row['bcorrect'];
+		$ccorrect = $row['ccorrect'];
+		$dcorrect = $row['dcorrect'];
 		
-		$ftxt = "\nPytanie: " . $text . "\na: " . $answer_a . "\nb: " . $answer_b . "\nc: " . $answer_c . "\nd: " . $answer_d;
-		fwrite($myfile, $ftxt);
+		//odpowiedzi uzytkownika
+		$answera = $_POST[$idpyt . 'a']; //odpowiedź uzytkownika a
+		$answerb = $_POST[$idpyt . 'b']; //odpowiedź uzytkownika b
+		$answerc = $_POST[$idpyt . 'c']; //odpowiedź uzytkownika c
+		$answerd = $_POST[$idpyt . 'd']; //odpowiedź uzytkownika d
 		
-		$answer = $_POST[$idpyt]; //odpowiedź uzytkownika
-		if($answer == $correct_answer){
+		//tresci pytan + czy poprawne
+		$htmlfile = $htmlfile . '<br><br><span style="font-weight:bold;">Pytanie: ' . $text . "</span>";
+
+		//czerwony - #FF4E4E
+		//zielony - #5ED868
+		
+		//a
+		if($acorrect){
+			$htmlfile = $htmlfile . '<span style="color:#5ED868;"><br>a: ' . $answer_a . "</span>";
+		}
+		else if(!$acorrect && $answera == 1){ //jesli uzytkownik zaznaczyl zla odp
+			$htmlfile = $htmlfile . '<span style="color:#FF4E4E;"><br>a: ' . $answer_a . "</span>";	
+		}
+		else{
+			$htmlfile = $htmlfile . "<br>a: " . $answer_a;		
+		}	
+
+		//b
+		if($bcorrect){
+			$htmlfile = $htmlfile . '<span style="color:#5ED868;"><br>b: ' . $answer_b . "</span>";
+		}
+		else if(!$bcorrect && $answerb == 1){ //jesli uzytkownik zaznaczyl zla odp
+			$htmlfile = $htmlfile . '<span style="color:#FF4E4E;"><br>b: ' . $answer_b . "</span>";	
+		}
+		else{
+			$htmlfile = $htmlfile . "<br>b: " . $answer_b;		
+		}
+
+		//c
+		if($ccorrect){
+			$htmlfile = $htmlfile . '<span style="color:#5ED868;"><br>c: ' . $answer_c . "</span>";
+		}
+		else if(!$ccorrect && $answerc == 1){ //jesli uzytkownik zaznaczyl zla odp
+			$htmlfile = $htmlfile . '<span style="color:#FF4E4E;"><br>c: ' . $answer_c . "</span>";	
+		}
+		else{
+			$htmlfile = $htmlfile . "<br>c: " . $answer_c;		
+		}	
+
+		//d
+		if($dcorrect){
+			$htmlfile = $htmlfile . '<span style="color:#5ED868;"><br>d: ' . $answer_d . "</span>";
+		}
+		else if(!$dcorrect && $answerd == 1){ //jesli uzytkownik zaznaczyl zla odp
+			$htmlfile = $htmlfile . '<span style="color:#FF4E4E;"><br>d: ' . $answer_d . "</span>";	
+		}
+		else{
+			$htmlfile = $htmlfile . "<br>d: " . $answer_d;		
+		}		
+		
+			
+		//zbior poprawnych i udzielonych odpowiedzi
+		if($answera == $acorrect && $answerb == $bcorrect && $answerc == $ccorrect && $answerd == $dcorrect){ //odp poprawne
 			$correct_answers = $correct_answers + 1;
-			$ftxt = "\nOdpowiedziano poprawnie\nPoprawna odpowiedź: " . $correct_answer . "\nOdpowiedź użytkownika: " . $answer;
-		fwrite($myfile, $ftxt);
-		}else{
+				$htmlfile = $htmlfile . '<span style=""><br><br>Odpowiedziano poprawnie<br>Poprawne odpowiedzi: ';
+				//fwrite($myfile, $ftxt);
+				
+				if($acorrect){
+					$htmlfile = $htmlfile . "a ";
+					//fwrite($myfile, $ftxt);
+				}
+				if($bcorrect){
+					$htmlfile = $htmlfile . "b ";
+					//fwrite($myfile, $ftxt);
+				}
+				if($ccorrect){
+					$htmlfile = $htmlfile . "c ";
+					//fwrite($myfile, $ftxt);
+				}
+				if($dcorrect){
+					$htmlfile = $htmlfile . "d ";
+					//fwrite($myfile, $ftxt);
+				}
+				
+				$htmlfile = $htmlfile . "<br>Odpowiedzi użytkownika: ";
+				//fwrite($myfile, $ftxt);
+				
+				if($answera == '1'){
+					$htmlfile = $htmlfile . "a ";
+					//fwrite($myfile, $ftxt);
+				}
+				if($answerb == '1'){
+					$htmlfile = $htmlfile . "b ";
+					//fwrite($myfile, $ftxt);
+				}
+				if($answerc == '1'){
+					$htmlfile = $htmlfile . "c ";
+					//fwrite($myfile, $ftxt);
+				}
+				if($answerd == '1'){
+					$htmlfile = $htmlfile . "d ";
+					//fwrite($myfile, $ftxt);
+				}
+				$htmlfile = $htmlfile . '</span>';
+		}
+		else{
 			if($answer != ''){	
-				$ftxt = "\nOdpowiedziano niepoprawnie\nPoprawna odpowiedź: " . $correct_answer . "\nOdpowiedź użytkownika: " . $answer;
-			}else{
-				$ftxt = "\nOdpowiedziano niepoprawnie\nPoprawna odpowiedź: " . $correct_answer . "\nOdpowiedź użytkownika: " . '-';
+				$htmlfile = $htmlfile . '<span style=""><br><br>Odpowiedziano niepoprawnie<br>Poprawne odpowiedzi: ';
+				//fwrite($myfile, $ftxt);
+				
+				if($acorrect){
+					$htmlfile = $htmlfile . "a ";
+					//fwrite($myfile, $ftxt);
+				}
+				if($bcorrect){
+					$htmlfile = $htmlfile . "b ";
+					//fwrite($myfile, $ftxt);
+				}
+				if($ccorrect){
+					$htmlfile = $htmlfile . "c ";
+					//fwrite($myfile, $ftxt);
+				}
+				if($dcorrect){
+					$htmlfile = $htmlfile . "d ";
+					//fwrite($myfile, $ftxt);
+				}
+				
+				$htmlfile = $htmlfile . "<br>Odpowiedzi użytkownika: ";
+				//fwrite($myfile, $ftxt);
+				
+				if($answera == '1'){
+					$htmlfile = $htmlfile . "a ";
+					//fwrite($myfile, $ftxt);
+				}
+				if($answerb == '1'){
+					$htmlfile = $htmlfile . "b ";
+					//fwrite($myfile, $ftxt);
+				}
+				if($answerc == '1'){
+					$htmlfile = $htmlfile . "c ";
+					//fwrite($myfile, $ftxt);
+				}
+				if($answerd == '1'){
+					$htmlfile = $htmlfile . "d ";
+					//fwrite($myfile, $ftxt);
+				}
+				$htmlfile = $htmlfile . '</span>';
+				
 			}
-	fwrite($myfile, $ftxt);
+			else{
+				$htmlfile = $htmlfile . '<span style=""><br><br>Odpowiedziano niepoprawnie<br>Poprawne odpowiedzi: ';
+				//fwrite($myfile, $ftxt);
+				
+				if($acorrect){
+					$htmlfile = $htmlfile . "a ";
+					//fwrite($myfile, $ftxt);
+				}
+				if($bcorrect){
+					$htmlfile = $htmlfile . "b ";
+					//fwrite($myfile, $ftxt);
+				}
+				if($ccorrect){
+					$htmlfile = $htmlfile . "c ";
+					//fwrite($myfile, $ftxt);
+				}
+				if($dcorrect){
+					$htmlfile = $htmlfile . "d ";
+					//fwrite($myfile, $ftxt);
+				}
+				
+				$htmlfile = $htmlfile . "<br>Odpowiedzi użytkownika: ";
+				//fwrite($myfile, $ftxt);
+				
+				if($answera == '1'){
+					$htmlfile = $htmlfile . "a ";
+					//fwrite($myfile, $ftxt);
+				}
+				if($answerb == '1'){
+					$htmlfile = $htmlfile . "b ";
+					//fwrite($myfile, $ftxt);
+				}
+				if($answerc == '1'){
+					$htmlfile = $htmlfile . "c ";
+					//fwrite($myfile, $ftxt);
+				}
+				if($answerd == '1'){
+					$htmlfile = $htmlfile . "d ";
+					//fwrite($myfile, $ftxt);
+				}
+				$htmlfile = $htmlfile . '</span>';
+			}
+
 		}
 	}
 
@@ -91,9 +269,11 @@ if (!isset($_SESSION['loggedin']))
 
 	//header('Location: index1.php');
 	
-	$ftxt = "\nWynik: " . $points . "p";
-	fwrite($myfile, $ftxt);
-	fclose($myfile);
+	$htmlfile = $htmlfile . "<br><br>Wynik: " . $points . "p";
+	//fwrite($myfile, $ftxt);
+	//fclose($myfile);
+	
+	$_SESSION['htmlfile'] = $htmlfile;
 
 	echo "<a href='generatepdf.php?username=$username&testname=$testname&datetime=$datetime' target='_blank'>Generuj plik</a>";
 	echo "<br><a href='index1.php'>Zapisz i zakończ</a>";

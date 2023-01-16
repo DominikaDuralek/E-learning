@@ -34,7 +34,7 @@ if (!isset($_SESSION['loggedin']))
 		<div class="sidecontent"> 
 			<?php
 				error_reporting(0);
-				$link = mysqli_connect(); //połączenie z BD
+				$link = mysqli_connect('', '', '', '');
 				if(!$link) { echo"Błąd: ". mysqli_connect_errno()." ".mysqli_connect_error(); } //obsługa błędu połączenia z BD
 				
 				//informacja o tym kto jest zalogowany
@@ -128,6 +128,20 @@ if (!isset($_SESSION['loggedin']))
 				foreach ($testquery as $row) {
 					echo "<br>Opis: " . $row['description']; //opis testu
 					//echo "<br>Czas na wykonanie: " . $row['max_time'] . "s"; //czas na wykonanie w sekundach
+					
+							$file = "files/" . $row['file_name'];
+							$file_extension = $row['file_extension'];
+							if($file!= ""){
+								if($file_extension == "png" || $file_extension == "jpg" || $file_extension == "jpeg" || $file_extension == "gif"){
+									echo "<img src='$file'><br>";
+								}
+								if($file_extension == "mp4"){
+									echo "<video controls autoplay muted width='320px' height='240px'><source src='$file' type='video/mp4'></video><br>";
+								}
+								if($file_extension == "mp3"){
+									echo "<audio controls><source src='$file' type='audio/mpeg'></audio><br>";
+								}
+							}
 					
 					if($_SESSION['username'] != 'admin'){
 					echo "<br><br><a href='teststart.php?idt=$idt'>Rozpocznij rozwiązywanie testu</a>";

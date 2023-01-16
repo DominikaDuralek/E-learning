@@ -25,7 +25,7 @@ if (!isset($_SESSION['loggedin']))
 		<div class="sidecontent"> 
 			<?php
 				error_reporting(0);
-				$link = mysqli_connect(); //połączenie z BD
+				$link = mysqli_connect('', '', '', '');
 				if(!$link) { echo"Błąd: ". mysqli_connect_errno()." ".mysqli_connect_error(); } //obsługa błędu połączenia z BD
 				date_default_timezone_set('Europe/Warsaw');
 				
@@ -130,8 +130,25 @@ if (!isset($_SESSION['loggedin']))
 				echo "Rozwiązywanie testu: " . $testname . "<br>" ;
 				echo "(autor: " . $author . ")<br>";
 				
+				$testfilequery = mysqli_query($link, "SELECT * FROM test WHERE name='$testname'");
+				foreach ($testfilequery as $row) {
+					$filename = $row['file_name'];
+					$file_extension = $row['file_extension'];
+				}
 				
-				//echo "<br>Czas: " .  $max_time;
+				
+							$file = "files/" . $filename;
+							if($file!= ""){
+								if($file_extension == "png" || $file_extension == "jpg" || $file_extension == "jpeg" || $file_extension == "gif"){
+									echo "<img src='$file'><br>";
+								}
+								if($file_extension == "mp4"){
+									echo "<video controls autoplay muted width='320px' height='240px'><source src='$file' type='video/mp4'></video><br>";
+								}
+								if($file_extension == "mp3"){
+									echo "<audio controls><source src='$file' type='audio/mpeg'></audio><br>";
+								}
+							}
 				
 				//pytania do wypelnienia
 				echo "<br><br>Pytania:";
@@ -150,21 +167,35 @@ if (!isset($_SESSION['loggedin']))
 					echo"
 					<br>
 					<label for='a'>
-						<input type='radio' id='a' name='$idpyt' value='a'>
+						<input type='checkbox' class='checkbox' value='1' name='" . $idpyt . "a' value='1'>
 						a) " . $row['answer_a'] . "</label>
 					<br>
 					<label for='b'>
-						<input type='radio' id='b' name='$idpyt' value='b'>
+						<input type='checkbox' class='checkbox' value='1' name='" .$idpyt . "b' value='2'>
 						b) " . $row['answer_b'] . "</label>
 					<br>
 					<label for='c'>
-						<input type='radio' id='c' name='$idpyt' value='c'>
+						<input type='checkbox' class='checkbox' value='1' name='" . $idpyt . "c' value='3'>
 						c) " . $row['answer_c'] . "</label>
 					<br>
 					<label for='d'>
-						<input type='radio' id='d' name='$idpyt' value='d'>
+						<input type='checkbox' class='checkbox' value='1' name='" . $idpyt. "d' value='4'>
 						d) " . $row['answer_d'] . "</label>
 					<br>";
+					
+							$file = $row['file_name'];
+							$file_extension = $row['file_extension'];
+							if($file!= ""){
+								if($file_extension == "png" || $file_extension == "jpg" || $file_extension == "jpeg" || $file_extension == "gif"){
+									echo "<img src='$file'><br>";
+								}
+								if($file_extension == "mp4"){
+									echo "<video controls autoplay muted width='320px' height='240px'><source src='$file' type='video/mp4'></video><br>";
+								}
+								if($file_extension == "mp3"){
+									echo "<audio controls><source src='$file' type='audio/mpeg'></audio><br>";
+								}
+							}
 				
 				}
 				

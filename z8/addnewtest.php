@@ -7,7 +7,7 @@ if (!isset($_SESSION['loggedin']))
 	exit();
 }
 //dodawanie testu przez coacha		
-		$link = mysqli_connect();
+		$link = mysqli_connect('', '', '', '');
 		if(!$link) { echo"Błąd: ". mysqli_connect_errno()." ".mysqli_connect_error(); }		
 
 		$user = $_SESSION['username']; //kto dodaje
@@ -21,7 +21,16 @@ if (!isset($_SESSION['loggedin']))
 			$idu = $row['idu'];
 		}		
 		
-		$testinsert = mysqli_query($link, "INSERT INTO test (idu, name, description) VALUES ('$idu', '$name', '$description')");
+		$user_dir = "files/"; //katalog z plikami
+		
+		$file_name = $_FILES["uploaded_file"]["name"];
+		$file_extension = pathinfo($_FILES["uploaded_file"]["name"], PATHINFO_EXTENSION); //rozszerzenie pliku
+		if(file_exists($_FILES['uploaded_file']['tmp_name'])){$file_target_location = $user_dir . $file_name;}
+		else{$file_target_location = "";}
+		move_uploaded_file($_FILES["uploaded_file"]["tmp_name"], $file_target_location);
+		
+		$testinsert = mysqli_query($link, "INSERT INTO test (idu, name, description, file_name, file_extension) 
+		VALUES ('$idu', '$name', '$description', '$file_name', '$file_extension')");
 		
 		mysqli_close($link);
 	

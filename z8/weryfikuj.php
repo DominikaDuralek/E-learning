@@ -4,7 +4,7 @@ $user = htmlentities ($_POST['user'], ENT_QUOTES, "UTF-8"); //rozbrojenie potenc
 session_start();
 $_SESSION['username'] = $user;
 $pass = htmlentities ($_POST['pass'], ENT_QUOTES, "UTF-8"); //rozbrojenie potencjalnej bomby w zmiennej $pass
-$link = mysqli_connect(); // połączenie z BD
+$link = mysqli_connect('mariadb106.server701675.nazwa.pl', 'server701675_domdur8', '6D6zB4WuURKzU@h', 'server701675_domdur8'); // połączenie z BD
 if(!$link) { echo"Błąd: ". mysqli_connect_errno()." ".mysqli_connect_error(); } //obsługa błędu połączenia z BD
 mysqli_query($link, "SET NAMES 'utf8'"); //ustawienie polskich znaków
 $result = mysqli_query($link, "SELECT * FROM user WHERE login='$user'"); // wiersza, w którym login=login z formularza

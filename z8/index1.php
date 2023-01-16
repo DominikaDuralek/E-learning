@@ -36,7 +36,7 @@ if (!isset($_SESSION['loggedin']))
 		<div class="sidecontent"> 
 			<?php
 				error_reporting(0);
-				$link = mysqli_connect(); //połączenie z BD
+				$link = mysqli_connect('', '', '', '');
 				if(!$link) { echo"Błąd: ". mysqli_connect_errno()." ".mysqli_connect_error(); } //obsługa błędu połączenia z BD
 				
 				//informacja o tym kto jest zalogowany
@@ -114,9 +114,9 @@ if (!isset($_SESSION['loggedin']))
 			<?php
 			if($role == 'admin'){
 				//listy elementow, ktore admin moze usuwac
-				echo "Panel Administratora<br><br>";
+				echo "&ensp;Panel Administratora<br><br>";
 				echo "<div class='lists'>";
-					echo "<div class='list'>";
+					echo "<div class='list' style='background-color:#dffbf6;padding:5px;margin-right:5px;margin-left:5px'>";
 						echo "Coach:<br>";
 						$coachlist = mysqli_query($link, "SELECT * FROM user WHERE role = 'coach'");
 						foreach ($coachlist as $row) {
@@ -124,7 +124,7 @@ if (!isset($_SESSION['loggedin']))
 							echo "<br>• " . $login . " <a href='deleteuser.php?login=$login'>usuń</a>";
 						}
 					echo "</div>";
-					echo "<div class='list'>";
+					echo "<div class='list' style='background-color:#dffbf6;padding:5px;margin-right:5px'>";
 						echo "Pracownik:<br>";
 						$pracowniklist = mysqli_query($link, "SELECT * FROM user WHERE role = 'pracownik'");
 						foreach ($pracowniklist as $row) {
@@ -132,7 +132,7 @@ if (!isset($_SESSION['loggedin']))
 							echo "<br>• " . $login . " <a href='deleteuser.php?login=$login'>usuń</a>";
 						}
 					echo "</div>";
-					echo "<div class='list'>";
+					echo "<div class='list' style='background-color:#dffbf6;padding:5px;margin-right:5px'>";
 						echo "Lekcja:<br>";
 						$lessonlist = mysqli_query($link, "SELECT * FROM lesson");
 						foreach ($lessonlist as $row) {
@@ -140,7 +140,7 @@ if (!isset($_SESSION['loggedin']))
 							echo "<br><a href='lessonpage.php?lessonname=$lessonname'>• " . $lessonname . "</a> <a href='deletelesson.php?lessonname=$lessonname'>usuń</a>";
 						}
 					echo "</div>";
-					echo "<div class='list'>";
+					echo "<div class='list' style='background-color:#dffbf6;padding:5px;margin-right:5px'>";
 						echo "Test:<br>";
 						$testlist = mysqli_query($link, "SELECT * FROM test");
 						foreach ($testlist as $row) {
@@ -153,8 +153,8 @@ if (!isset($_SESSION['loggedin']))
 			
 			if($role == 'coach'){
 				//panel coacha - lekcje i testy
-				echo "Panel Coacha<br><br>";
-				echo "<div class='columns'>";
+				echo "&ensp;Panel Coacha<br><br>";
+				echo "<div class='columns' style='background-color:#dffbf6;padding:5px;margin-right:5px;margin-left:5px'>";
 					echo "<div class='column'>";
 						echo "<a href='newlesson.php'>Dodaj nową lekcję</a><br>";
 						echo "Moje lekcje<br>";
@@ -164,7 +164,7 @@ if (!isset($_SESSION['loggedin']))
 							echo "<br><a href='lessonpage.php?lessonname=$lessonname'>• " . $lessonname . "</a> <a href='editlesson.php?lessonname=$lessonname'>edytuj</a> <a href='deletelesson.php?lessonname=$lessonname'>usuń</a>";
 						}
 					echo "</div>";
-					echo "<div class='column'>";
+					echo "<div class='column' style='background-color:#dffbf6;padding:5px;margin-right:5px;'>";
 						echo "<a href='newtest.php'>Dodaj nowy test</a><br>";
 						echo "Moje testy<br>";
 						$testlist = mysqli_query($link, "SELECT * FROM test WHERE idu='$currentidu'");
@@ -191,9 +191,9 @@ if (!isset($_SESSION['loggedin']))
 			
 			if($role == 'pracownik'){
 				//panel pracownika - wyniki testow
-				echo "Panel Pracownika<br><br>";
+				echo "&ensp;Panel Pracownika<br><br>";
 					echo "<div class='columns'>";
-					echo "<div class='column'>";
+					echo "<div class='column' style='background-color:#dffbf6;padding:5px;margin-right:5px;margin-left:5px'>";
 						echo "Moje wyniki testów:<br>";
 						$resultlist = mysqli_query($link, "SELECT * FROM result WHERE idu='$currentidu'");
 						foreach ($resultlist as $row) {

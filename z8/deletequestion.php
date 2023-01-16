@@ -9,7 +9,7 @@
 	
 	$idpyt = $_GET['idpyt']; //id pytania do usuniecia
 	
-	$link = mysqli_connect(); // połączenie z BD
+	$link = mysqli_connect('', '', '', '');
 	if(!$link) { echo"Błąd: ". mysqli_connect_errno()." ".mysqli_connect_error(); } // obsługa błędu połączenia z BD
 	
 	$sql = "DELETE FROM question WHERE idpyt='$idpyt'"; //usuniecie pytania z bazy

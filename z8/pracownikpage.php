@@ -27,7 +27,7 @@ if (!isset($_SESSION['loggedin']))
 		<div class="sidecontent"> 
 			<?php
 				error_reporting(0);
-				$link = mysqli_connect(); //połączenie z BD
+				$link = mysqli_connect('', '', '', '');
 				if(!$link) { echo"Błąd: ". mysqli_connect_errno()." ".mysqli_connect_error(); } //obsługa błędu połączenia z BD
 				
 				//informacja o tym kto jest zalogowany
@@ -113,7 +113,7 @@ if (!isset($_SESSION['loggedin']))
 				}
 				
 				echo "<div class='columns'>";
-					echo "<div class='column'>";
+					echo "<div class='column' style='background-color:#dffbf6;padding:5px;margin-right:5px;margin-left:5px'>";
 						//logi pracownika
 						echo "Aktywności pracownika:<br>";
 						$logquery = mysqli_query($link, "SELECT * FROM log WHERE idu='$idu'");
@@ -122,7 +122,7 @@ if (!isset($_SESSION['loggedin']))
 						}
 						
 					echo "</div>";
-					echo "<div class='column'>";
+					echo "<div class='column' style='background-color:#dffbf6;padding:5px;margin-right:5px;margin-left:5px'>";
 						echo "Wyniki testów pracownika:<br>";
 						
 						$resultlist = mysqli_query($link, "SELECT * FROM result WHERE idu='$idu'");
@@ -133,7 +133,8 @@ if (!isset($_SESSION['loggedin']))
 							foreach ($testlist as $row2) {
 								$testname = $row2['name'];
 							}
-							echo "<br>• " . $testname . " - " . $row['points'] . " - " . $row['pdf_file'];
+							$file = $row['pdf_file'];
+							echo "<br>• " . $testname . " - " . $row['points'] . " - <a href='$file' target='_blank'>" . $row['pdf_file'] . "</a>";
 						}
 					echo "</div>";
 				echo "</div>";

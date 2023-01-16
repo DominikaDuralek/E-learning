@@ -25,7 +25,7 @@ if (!isset($_SESSION['loggedin']))
 		<div class="sidecontent"> 
 			<?php
 				error_reporting(0);
-				$link = mysqli_connect(); //połączenie z BD
+				$link = mysqli_connect('', '', '', ''); //połączenie z BD
 				if(!$link) { echo"Błąd: ". mysqli_connect_errno()." ".mysqli_connect_error(); } //obsługa błędu połączenia z BD
 				
 				//informacja o tym kto jest zalogowany
@@ -119,18 +119,10 @@ if (!isset($_SESSION['loggedin']))
 						<input type='hidden' name='idt' id='idt' value='$idt'>
 						<input type='hidden' name='testname' id='testname' value='$testname'>
 						Pytanie:&nbsp;<input type='text' name='question' maxlength='100' size='100'><br>
-						Odp.a:&nbsp;<input type='text' name='answer_a' maxlength='200' size='50'><br>
-						Odp.b:&nbsp;<input type='text' name='answer_b' maxlength='200' size='50'><br>
-						Odp.c:&nbsp;<input type='text' name='answer_c' maxlength='200' size='50'><br>
-						Odp.d:&nbsp;<input type='text' name='answer_d' maxlength='200' size='50'><br>
-						
-						<label for='correct_answer'>Poprawna odpowiedź:</label>
-						<select name='correct_answer' id='correct_answer'>
-						  <option value='a'>a</option>
-						  <option value='b'>b</option>
-						  <option value='c'>c</option>
-						  <option value='d'>d</option>
-						</select>
+						Odp.a:&nbsp;<input type='text' name='answer_a' maxlength='200' size='50'> <label><input type='checkbox' class='checkbox' value='1' name='apop' />poprawna</label><br>
+						Odp.b:&nbsp;<input type='text' name='answer_b' maxlength='200' size='50'> <label><input type='checkbox' class='checkbox' value='1' name='bpop' />poprawna</label><br>
+						Odp.c:&nbsp;<input type='text' name='answer_c' maxlength='200' size='50'> <label><input type='checkbox' class='checkbox' value='1' name='cpop' />poprawna</label><br>
+						Odp.d:&nbsp;<input type='text' name='answer_d' maxlength='200' size='50'> <label><input type='checkbox' class='checkbox' value='1' name='dpop' />poprawna</label><br>
 						
 						Plik: <input type='file' name='uploaded_file' id='uploaded_file'><br><br>
 						<input type='submit' value='Send' />
@@ -153,7 +145,6 @@ if (!isset($_SESSION['loggedin']))
 					echo "<br>Odp.b: " . $answer_b;
 					echo "<br>Odp.c: " . $answer_c;
 					echo "<br>Odp.d: " . $answer_d;
-					echo "<br>Poprawna odpowiedź: " . $correct;
 					echo "<br><a href='deletequestion.php?idpyt=$idpyt&testname=$testname'>Usuń pytanie</a>";
 				}
 			?>

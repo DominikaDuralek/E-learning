@@ -2,7 +2,7 @@
 $user = htmlentities ($_POST['user'], ENT_QUOTES, "UTF-8"); // rozbrojenie potencjalnej bomby w zmiennej $user
 $pass = htmlentities ($_POST['pass'], ENT_QUOTES, "UTF-8"); // rozbrojenie potencjalnej bomby w zmiennej $pass
 $confirm_pass = htmlentities ($_POST['confirm_pass'], ENT_QUOTES, "UTF-8");
-$link = mysqli_connect(); // połączenie z BD
+		$link = mysqli_connect('', '', '', '');
 if(!$link) { echo"Błąd: ". mysqli_connect_errno()." ".mysqli_connect_error(); } // obsługa błędu połączenia z BD
 mysqli_query($link, "SET NAMES 'utf8'"); // ustawienie polskich znaków
 

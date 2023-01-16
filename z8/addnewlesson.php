@@ -7,7 +7,7 @@ if (!isset($_SESSION['loggedin']))
 	exit();
 }
 //dodawanie lekcji przez coacha		
-		$link = mysqli_connect();
+		$link = mysqli_connect('', '', '', '');
 		if(!$link) { echo"Błąd: ". mysqli_connect_errno()." ".mysqli_connect_error(); }		
 		//dodanie posta do bazy
 		$user = $_SESSION['username']; //kto dodaje
